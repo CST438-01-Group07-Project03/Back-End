@@ -1,11 +1,8 @@
 package com.FoodSwiper.Entities;
 
+import jakarta.persistence.*;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,12 +19,8 @@ public class Users {
     private String username;
     private String email;
 
-    // List of groups
-    @OneToMany
-    List<Group> groups;
-    // List of favorite foods/restaurants
-    @OneToMany
-    List<Item> favorites;
+    @ManyToMany
+    List<Groups> groups;
 
     public Users(String username, String email){
         this.username = username;
@@ -61,32 +54,16 @@ public class Users {
         this.email = email;
     }
 
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
-    public List<Item> getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(List<Item> favorites) {
-        this.favorites = favorites;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Users users = (Users) o;
-        return id == users.id && Objects.equals(username, users.username) && Objects.equals(email, users.email) && Objects.equals(groups, users.groups) && Objects.equals(favorites, users.favorites);
+        return id == users.id && Objects.equals(username, users.username) && Objects.equals(email, users.email);// && Objects.equals(groups, users.groups);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, groups, favorites);
+        return Objects.hash(id, username, email);//, groups);
     }
 
     @Override

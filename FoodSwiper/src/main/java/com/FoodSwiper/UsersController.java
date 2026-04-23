@@ -20,19 +20,19 @@ class UsersController {
 
     // Get all users
     @CrossOrigin
-    @GetMapping("./users")
+    @GetMapping("/users")
     List<Users> all(){
         return repository.findAll();
     }
     // Create a user
     @CrossOrigin
-    @PostMapping("./users")
+    @PostMapping("/users")
     Users newUser(@RequestBody Users newUser){
         return repository.save(newUser);
     }
     // Edit a user
     @CrossOrigin
-    @PutMapping("./users/{id}")
+    @PutMapping("/users/{id}")
     Users editUser(@PathVariable Long id, @RequestBody Users newUser){
         return repository.findById(id).map(user ->{
             return repository.save(user);
@@ -42,7 +42,7 @@ class UsersController {
     }
     // Delete a user
     @CrossOrigin
-    @DeleteMapping("./users/{id}")
+    @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable Long id){
         repository.deleteById(id);
     }

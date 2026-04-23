@@ -20,19 +20,19 @@ public class RestaurantController {
 
     // Get all restaurants
     @CrossOrigin
-    @GetMapping("./restaurants")
+    @GetMapping("/restaurants")
     List<Restaurant> all(){
         return repository.findAll();
     }
     // Create a restaurant
     @CrossOrigin
-    @PostMapping("./restaurants")
+    @PostMapping("/restaurants")
     Restaurant newRestaurant(@RequestBody Restaurant newRestaurant){
         return repository.save(newRestaurant);
     }
     // Edit a restaurant
     @CrossOrigin
-    @PutMapping("./restaurants/{id}")
+    @PutMapping("/restaurants/{id}")
     Restaurant editRestaurant(@PathVariable Long id, @RequestBody Restaurant newRestaurant){
         return repository.findById(id).map(restaurant -> {
             return repository.save(restaurant);
@@ -42,7 +42,7 @@ public class RestaurantController {
     }
     // Delete a restaurant
     @CrossOrigin
-    @DeleteMapping("./restaurants/{id}")
+    @DeleteMapping("/restaurants/{id}")
     void deleteRestaurant(@PathVariable Long id){
         repository.deleteById(id);
     }

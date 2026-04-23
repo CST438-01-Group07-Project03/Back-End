@@ -4,8 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import org.apache.catalina.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,20 +14,18 @@ import java.util.Objects;
  * @since 4/22/2026
  */
 @Entity
-public class Group {
+public class Groups {
     @Id
     @GeneratedValue
     private long id;
-
     private String name;
     @ManyToMany
-    private List<Users> members;
-    // List of foods/restaurants to be voted on
-
-    public Group(String name){
+    List<Users> members;
+    public Groups(String name){
         this.name = name;
+        this.members = new ArrayList<>();
     }
-    public Group(){
+    public Groups(){
         this("");
     }
 
@@ -47,19 +45,15 @@ public class Group {
         this.name = name;
     }
 
-    public List<Users> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Users> members) {
-        this.members = members;
+    List<Users> getMembers(){
+        return this.members;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Group group = (Group) o;
-        return id == group.id && Objects.equals(name, group.name) && Objects.equals(members, group.members);
+        Groups groups = (Groups) o;
+        return id == groups.id && Objects.equals(name, groups.name) && Objects.equals(members, groups.members);
     }
 
     @Override
@@ -69,10 +63,9 @@ public class Group {
 
     @Override
     public String toString() {
-        return "Group{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", members=" + members +
+        return "Groups{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
                 '}';
     }
 }

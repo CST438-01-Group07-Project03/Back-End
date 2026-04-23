@@ -1,5 +1,6 @@
 package com.FoodSwiper.Repositories;
 
+import com.FoodSwiper.Entities.Food;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

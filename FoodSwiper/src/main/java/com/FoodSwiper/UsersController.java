@@ -32,7 +32,7 @@ class UsersController {
     }
     // Edit a user
     @CrossOrigin
-    @PutMapping("./users/{id")
+    @PutMapping("./users/{id}")
     Users editUser(@PathVariable Long id, @RequestBody Users newUser){
         return repository.findById(id).map(user ->{
             return repository.save(user);

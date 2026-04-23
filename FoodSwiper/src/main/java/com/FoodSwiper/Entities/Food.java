@@ -1,11 +1,14 @@
 package com.FoodSwiper.Entities;
 
+import jakarta.persistence.Entity;
+
 import java.util.Objects;
 
 /**
  * @author Peter Gloag
  * @since 4/22/2026
  */
+@Entity
 public class Food extends Item{
     private Integer calories;
 

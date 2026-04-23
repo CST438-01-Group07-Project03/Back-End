@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Entity
 public class SwipeHistory {
 
-
     @Id
     @GeneratedValue
     private long id;

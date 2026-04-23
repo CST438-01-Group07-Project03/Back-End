@@ -3,7 +3,10 @@ package com.FoodSwiper.Entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -11,20 +14,19 @@ import java.util.Objects;
  * @since 4/22/2026
  */
 @Entity
-public class Item {
+public class Groups {
     @Id
     @GeneratedValue
     private long id;
-
     private String name;
-    private String description;
-
-    public Item(String name, String description){
+    @ManyToMany
+    List<Users> members;
+    public Groups(String name){
         this.name = name;
-        this.description = description;
+        this.members = new ArrayList<>();
     }
-    public Item(){
-        this("", "");
+    public Groups(){
+        this("");
     }
 
     public long getId() {
@@ -43,32 +45,27 @@ public class Item {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    List<Users> getMembers(){
+        return this.members;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return id == item.id && Objects.equals(name, item.name) && Objects.equals(description, item.description);
+        Groups groups = (Groups) o;
+        return id == groups.id && Objects.equals(name, groups.name) && Objects.equals(members, groups.members);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description);
+        return Objects.hash(id, name, members);
     }
 
     @Override
     public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
+        return "Groups{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
                 '}';
     }
 }

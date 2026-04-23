@@ -35,6 +35,7 @@ public class SwipeHistoryService {
         return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId);
     }
 
+
     public List<SwipeHistory> getLikedFoods(long userId) {
         return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId)
                 .stream()

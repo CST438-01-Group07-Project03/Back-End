@@ -22,10 +22,9 @@ public class Users {
     private String username;
     private String email;
 
-    // List of groups
     @OneToMany
     List<Group> groups;
-    // List of favorite foods/restaurants
+
     @OneToMany
     List<Item> favorites;
 

@@ -10,5 +10,4 @@ import java.util.List;
  * @since 4/22/2026
  */
 public interface GroupRepository extends JpaRepository<Group, Long> {
-    List<Group> getLL();
 }

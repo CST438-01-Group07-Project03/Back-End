@@ -22,6 +22,9 @@ public class Users {
     @ManyToMany
     List<Groups> groups;
 
+    @OneToMany
+    List<Item> favorites;
+
     public Users(String username, String email){
         this.username = username;
         this.email = email;

@@ -4,6 +4,8 @@ The back end repository for CST438 Project 03
 ./gradlew bootrun
 ./gradlew test
 localhost:8080/restaurants in browser to show data
+localhost:8080/users
+localhost:8080/food
 # FoodSwipe
 
 A dating app-style food discovery app for Android. Swipe through foods and restaurants, build a personal taste profile, and see what others like to eat.

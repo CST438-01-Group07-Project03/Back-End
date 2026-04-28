@@ -30,7 +30,7 @@ class UsersController {
     @CrossOrigin
     @GetMapping("/users/{id}")
     Users getUser(@PathVariable Long id) {
-        return repository.findById(id).orElse(new Users());
+        return repository.findById(id).orElse(null);
     }
 
     // Create a user
@@ -45,6 +45,10 @@ class UsersController {
     @PutMapping("/users/{id}")
     Users editUser(@PathVariable Long id, @RequestBody Users newUser) {
         return repository.findById(id).map(user -> {
+            if(newUser.getUsername() != null && !newUser.getUsername().isEmpty())
+                user.setUsername(newUser.getUsername());
+            if(newUser.getEmail() != null && !newUser.getEmail().isEmpty())
+                user.setEmail(newUser.getEmail());
             return repository.save(user);
         }).orElseGet(() -> {
             return repository.save(newUser);

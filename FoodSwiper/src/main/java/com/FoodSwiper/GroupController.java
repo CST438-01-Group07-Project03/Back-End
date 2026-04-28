@@ -28,6 +28,12 @@ class GroupController {
     List<Groups> all(){
         return repository.findAll();
     }
+    // Get a group by id
+    @CrossOrigin
+    @GetMapping("/groups/{id}")
+    Groups getGroup(@PathVariable Long id){
+        return repository.findById(id).orElse(null);
+    }
     // Create a group
     @CrossOrigin
     @PostMapping("/groups")
@@ -36,7 +42,7 @@ class GroupController {
     }
     // Edit a group
     @CrossOrigin
-    @PostMapping("/groups/{id}")
+    @PutMapping("/groups/{id}")
     Groups editGroup(@PathVariable Long id, @RequestBody Groups newGroup){
         return repository.findById(id).map(group -> {
             return repository.save(group);
@@ -46,7 +52,7 @@ class GroupController {
     }
     // Add a user to a group
     @CrossOrigin
-    @PostMapping("/groups/{id}/addMember/{user_id}")
+    @PutMapping("/groups/{id}/addMember/{user_id}")
     Groups addMember(@PathVariable Long id, @PathVariable Long user_id){
         return repository.findById(id).map(group->{
             Users newMember = usersRepository.findById(user_id).orElse(null);
@@ -56,6 +62,16 @@ class GroupController {
             return repository.save(group);
         }).orElseGet(()->{
             return null;
+        });
+    }
+    // Remove a user from a group
+    @CrossOrigin
+    @PutMapping("/groups/{id}/removeMember/{user_id}")
+    void removeMember(@PathVariable Long id, @PathVariable Long user_id){
+        Users to_remove = usersRepository.findById(user_id).orElse(null);
+        repository.findById(id).map(group->{
+            group.removeMember(to_remove);
+            return repository.save(group);
         });
     }
     // Delete a group

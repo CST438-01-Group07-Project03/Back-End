@@ -54,7 +54,9 @@ public class Groups {
     public void addMember(Users new_member){
         this.members.add(new_member);
     }
-
+    public void removeMember(Users member){
+        this.members.remove(member);
+    }
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

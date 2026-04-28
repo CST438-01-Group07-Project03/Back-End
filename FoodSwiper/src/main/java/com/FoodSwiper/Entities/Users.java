@@ -19,9 +19,6 @@ public class Users {
     private String username;
     private String email;
 
-    @ManyToMany
-    List<Groups> groups;
-
     @OneToMany
     List<Item> favorites;
 

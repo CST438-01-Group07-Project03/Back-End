@@ -12,38 +12,49 @@ import java.util.List;
  */
 @RestController
 class UsersController {
+
     private final UsersRepository repository;
 
-    UsersController(UsersRepository repository){
+    UsersController(UsersRepository repository) {
         this.repository = repository;
     }
 
     // Get all users
     @CrossOrigin
     @GetMapping("/users")
-    List<Users> all(){
+    List<Users> all() {
         return repository.findAll();
     }
+
+    // Get a user by id
+    @CrossOrigin
+    @GetMapping("/users/{id}")
+    Users getUser(@PathVariable Long id) {
+        return repository.findById(id).orElse(new Users());
+    }
+
     // Create a user
     @CrossOrigin
     @PostMapping("/users")
-    Users newUser(@RequestBody Users newUser){
+    Users newUser(@RequestBody Users newUser) {
         return repository.save(newUser);
     }
+
     // Edit a user
     @CrossOrigin
     @PutMapping("/users/{id}")
-    Users editUser(@PathVariable Long id, @RequestBody Users newUser){
-        return repository.findById(id).map(user ->{
+    Users editUser(@PathVariable Long id, @RequestBody Users newUser) {
+        return repository.findById(id).map(user -> {
             return repository.save(user);
-        }).orElseGet(() ->{
+        }).orElseGet(() -> {
             return repository.save(newUser);
         });
     }
+
     // Delete a user
     @CrossOrigin
     @DeleteMapping("/users/{id}")
-    void deleteUser(@PathVariable Long id){
+    void deleteUser(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }

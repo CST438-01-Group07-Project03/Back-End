@@ -1,9 +1,6 @@
 package com.FoodSwiper.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +16,9 @@ public class Groups {
     @GeneratedValue
     private long id;
     private String name;
-    @ManyToMany
-    List<Users> members;
+
+    @OneToMany
+    private List<Users> members;
     public Groups(String name){
         this.name = name;
         this.members = new ArrayList<>();
@@ -45,8 +43,16 @@ public class Groups {
         this.name = name;
     }
 
-    List<Users> getMembers(){
+    public List<Users> getMembers(){
         return this.members;
+    }
+
+    public void setMembers(List<Users> members){
+        this.members = members;
+    }
+
+    public void addMember(Users new_member){
+        this.members.add(new_member);
     }
 
     @Override
@@ -65,6 +71,7 @@ public class Groups {
     public String toString() {
         return "Groups{" +
                 "name='" + name + '\'' +
+                "members=" + members +
                 ", id=" + id +
                 '}';
     }

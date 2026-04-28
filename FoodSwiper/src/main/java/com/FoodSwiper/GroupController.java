@@ -1,9 +1,12 @@
 package com.FoodSwiper;
 
 import com.FoodSwiper.Entities.Groups;
+import com.FoodSwiper.Entities.Users;
 import com.FoodSwiper.Repositories.GroupRepository;
+import com.FoodSwiper.Repositories.UsersRepository;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -13,8 +16,10 @@ import java.util.List;
 @RestController
 class GroupController {
     private  final GroupRepository repository;
-    GroupController(GroupRepository repository){
+    private  final UsersRepository usersRepository;
+    GroupController(GroupRepository repository, UsersRepository usersRepository){
         this.repository = repository;
+        this.usersRepository = usersRepository;
     }
 
     // Get all groups
@@ -37,6 +42,20 @@ class GroupController {
             return repository.save(group);
         }).orElseGet(()->{
             return  repository.save(newGroup);
+        });
+    }
+    // Add a user to a group
+    @CrossOrigin
+    @PostMapping("/groups/{id}/addMember/{user_id}")
+    Groups addMember(@PathVariable Long id, @PathVariable Long user_id){
+        return repository.findById(id).map(group->{
+            Users newMember = usersRepository.findById(user_id).orElse(null);
+            if(newMember == null || group.getMembers().contains(newMember))
+                return group;
+            group.addMember(newMember);
+            return repository.save(group);
+        }).orElseGet(()->{
+            return null;
         });
     }
     // Delete a group

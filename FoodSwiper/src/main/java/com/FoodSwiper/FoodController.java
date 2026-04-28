@@ -32,7 +32,7 @@ public class FoodController {
     }
     // Edit a food
     @CrossOrigin
-    @PostMapping("/food/{id}")
+    @PutMapping("/food/{id}")
     Food editFood(@PathVariable Long id, @RequestBody Food newFood){
         return repository.findById(id).map(food ->{
            return repository.save(food);

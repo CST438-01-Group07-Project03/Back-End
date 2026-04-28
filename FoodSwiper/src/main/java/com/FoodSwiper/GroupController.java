@@ -31,7 +31,7 @@ class GroupController {
     }
     // Edit a group
     @CrossOrigin
-    @PostMapping("/groups/{id}")
+    @PutMapping("/groups/{id}")
     Groups editGroup(@PathVariable Long id, @RequestBody Groups newGroup){
         return repository.findById(id).map(group -> {
             return repository.save(group);

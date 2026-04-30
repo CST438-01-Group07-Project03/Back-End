@@ -55,6 +55,7 @@ public class SwipeHistoryService {
         return false;
     }
 
+
     public List<Item> getUnswipedItems(long userId, List<Item> allItems) {
         List<Long> swipedIds = swipeHistoryRepository.findByUser_Id(userId)
                 .stream()

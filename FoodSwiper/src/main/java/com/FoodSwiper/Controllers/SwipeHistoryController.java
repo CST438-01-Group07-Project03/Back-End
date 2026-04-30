@@ -45,6 +45,7 @@ public class SwipeHistoryController {
         return ResponseEntity.ok(likes);
     }
 
+
     @PostMapping("/{id}/likes")
     public ResponseEntity<?> recordSwipe(@PathVariable long id,
                                          @RequestBody Map<String, Object> body) {

@@ -1,9 +1,12 @@
 package com.FoodSwiper.Controllers;
 
+import com.FoodSwiper.Entities.Item;
 import com.FoodSwiper.Entities.SwipeHistory;
+import com.FoodSwiper.Entities.Users;
+import com.FoodSwiper.Repositories.ItemRepository;
+import com.FoodSwiper.Repositories.UsersRepository;
 import com.FoodSwiper.Services.SwipeHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +15,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class SwipeHistoryController {
 
     @Autowired
     private SwipeHistoryService swipeHistoryService;
+
+    @Autowired
+    private UsersRepository usersRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @GetMapping("/{id}/likes")
     public ResponseEntity<List<SwipeHistory>> getLikes(@PathVariable long id) {
@@ -39,8 +48,21 @@ public class SwipeHistoryController {
     @PostMapping("/{id}/likes")
     public ResponseEntity<?> recordSwipe(@PathVariable long id,
                                          @RequestBody Map<String, Object> body) {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-                .body("TODO: wire up UserRepository and ItemRepository");
+        Users user = usersRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Long itemId = Long.valueOf(body.get("itemId").toString());
+        boolean liked = Boolean.parseBoolean(body.get("liked").toString());
+
+        Item item = itemRepository.findById(itemId).orElse(null);
+        if (item == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        SwipeHistory swipe = swipeHistoryService.recordSwipe(user, item, liked);
+        return ResponseEntity.ok(swipe);
     }
 
     @DeleteMapping("/{id}/likes/{likeId}")

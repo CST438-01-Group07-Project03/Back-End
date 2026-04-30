@@ -1,7 +1,9 @@
 package com.FoodSwiper;
 
+import com.FoodSwiper.Entities.Groups;
 import com.FoodSwiper.Entities.Item;
 import com.FoodSwiper.Entities.Users;
+import com.FoodSwiper.Repositories.GroupRepository;
 import com.FoodSwiper.Repositories.ItemRepository;
 import com.FoodSwiper.Repositories.UsersRepository;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +19,11 @@ class UsersController {
 
     private final UsersRepository repository;
     private final ItemRepository itemRepository;
-    UsersController(UsersRepository repository, ItemRepository itemRepository) {
+    private final GroupRepository groupRepository;
+    UsersController(UsersRepository repository, ItemRepository itemRepository, GroupRepository groupRepository) {
         this.repository = repository;
         this.itemRepository = itemRepository;
+        this.groupRepository = groupRepository;
     }
 
     // Get all users
@@ -85,6 +89,15 @@ class UsersController {
     @CrossOrigin
     @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable Long id) {
+        Users user = repository.findById(id).orElse(null);
+        if(user == null)
+            return;
+        for(Long g : user.getGroup_ids()){
+            groupRepository.findById(g).map(group -> {
+                group.removeMember(user);
+                return  groupRepository.save(group);
+            });
+        }
         repository.deleteById(id);
     }
 }

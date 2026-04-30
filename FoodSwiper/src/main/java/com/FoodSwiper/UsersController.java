@@ -71,6 +71,16 @@ class UsersController {
         });
         return fav;
     }
+    // remove a favorite
+    @CrossOrigin
+    @PutMapping("/users/{id}/removeFavorite/{fav_id}")
+    void removeFavorite(@PathVariable Long id, @PathVariable Long fav_id){
+        repository.findById(id).map(user -> {
+            Item fav = itemRepository.findById(fav_id).orElse(null);
+           user.removeFavorite(fav);
+           return repository.save(user);
+        });
+    }
     // Delete a user
     @CrossOrigin
     @DeleteMapping("/users/{id}")

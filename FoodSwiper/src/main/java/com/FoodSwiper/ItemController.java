@@ -29,6 +29,12 @@ public class ItemController {
     Item getItem(@PathVariable Long id){
         return repository.findById(id).orElse(null);
     }
+    // Get all items of a specific type
+    @CrossOrigin
+    @GetMapping(value = "/items", params = "type")
+    List<Item> getItemsByType(@RequestParam("type") String item_type){
+        return repository.findByType(item_type);
+    }
     // Create a new item
     @CrossOrigin
     @PostMapping("/items")

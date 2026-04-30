@@ -1,7 +1,7 @@
 package com.FoodSwiper;
 
-import com.FoodSwiper.Entities.Restaurant;
-import com.FoodSwiper.Repositories.RestaurantRepository;
+import com.FoodSwiper.Entities.Item;
+import com.FoodSwiper.Repositories.ItemRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -21,15 +21,15 @@ public class YelpDataLoader {
     private static final String YELP_FILE = "C:/Users/831Cr/Downloads/Yelp-JSON/Yelp JSON/yelp_dataset/yelp_academic_dataset_business.json";
 
     @Bean
-    CommandLineRunner loadRestaurants(RestaurantRepository restaurantRepository) {
+    CommandLineRunner loadRestaurants(ItemRepository itemRepository) {
         return args -> {
-            if (restaurantRepository.count() > 0) {
+            if (itemRepository.count() > 0) {
                 log.info("Restaurants already loaded, skipping.");
                 return;
             }
 
             ObjectMapper mapper = new ObjectMapper();
-            List<Restaurant> batch = new ArrayList<>();
+            List<Item> batch = new ArrayList<>();
             int count = 0;
 
             try (BufferedReader br = new BufferedReader(new FileReader(YELP_FILE))) {
@@ -47,21 +47,18 @@ public class YelpDataLoader {
                         continue;
                     }
 
-                    String yelpId = node.path("business_id").asText("");
                     String name = node.path("name").asText("");
-                    String address = node.path("address").asText("");
-                    String zipCode = node.path("postal_code").asText("");
-                    double stars = node.path("stars").asDouble(0);
-                    int reviewCount = node.path("review_count").asInt(0);
 
                     if (categories.length() > 500) {
                         categories = categories.substring(0, 500);
                     }
 
-                    batch.add(new Restaurant(name, yelpId, address, city, state, zipCode, stars, reviewCount, categories, ""));
+                    Item item = new Item(name, categories);
+                    item.setType("restaurant");
+                    batch.add(item);
 
                     if (batch.size() == 100) {
-                        restaurantRepository.saveAll(batch);
+                        itemRepository.saveAll(batch);
                         count += batch.size();
                         batch.clear();
                         log.info("Loaded {} restaurants...", count);
@@ -69,7 +66,7 @@ public class YelpDataLoader {
                 }
 
                 if (!batch.isEmpty()) {
-                    restaurantRepository.saveAll(batch);
+                    itemRepository.saveAll(batch);
                     count += batch.size();
                 }
             }

@@ -18,6 +18,7 @@ public class Item {
 
     private String name;
     private String description;
+    private String type;
 
     public Item(String name, String description){
         this.name = name;
@@ -49,6 +50,13 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getType(){
+        return this.type;
+    }
+    public void setType(String type){
+        this.type = type;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.FoodSwiper;
 
+import com.FoodSwiper.Entities.Item;
 import com.FoodSwiper.Entities.Users;
 import com.FoodSwiper.Repositories.UsersRepository;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,10 @@ import java.util.List;
 class UsersController {
 
     private final UsersRepository repository;
-
-    UsersController(UsersRepository repository) {
+//    private final ItemRepository itemRepository;
+    UsersController(UsersRepository repository){//, ItemRepository itemRepository) {
         this.repository = repository;
+//        this.itemRepository = itemRepository;
     }
 
     // Get all users
@@ -54,7 +56,20 @@ class UsersController {
             return repository.save(newUser);
         });
     }
-
+//    // Add a favorite
+//    @CrossOrigin
+//    @PutMapping("/users/{id}/addFavorite/{fav_id}")
+//    Item addFavorite(@PathVariable Long id, @PathVariable Long fav_id){
+//        Item fav = itemRepository.findById(fav_id).orElse(null);
+//        repository.findById(id).map(user -> {
+//            if(fav == null || user.getFavorites().contains(fav))
+//                return user;
+//            user.addFavorite(fav);
+//            repository.save(user);
+//            return fav;
+//        });
+//        return fav;
+//    }
     // Delete a user
     @CrossOrigin
     @DeleteMapping("/users/{id}")

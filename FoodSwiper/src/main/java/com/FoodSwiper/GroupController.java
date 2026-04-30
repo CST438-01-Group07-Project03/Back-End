@@ -59,6 +59,12 @@ class GroupController {
             if(newMember == null || group.getMembers().contains(newMember))
                 return group;
             group.addMember(newMember);
+
+            usersRepository.findById(user_id).map(user ->{
+                user.addGroup(id);
+                return  usersRepository.save(user);
+            });
+
             return repository.save(group);
         }).orElseGet(()->{
             return null;
@@ -71,6 +77,10 @@ class GroupController {
         Users to_remove = usersRepository.findById(user_id).orElse(null);
         repository.findById(id).map(group->{
             group.removeMember(to_remove);
+            usersRepository.findById(user_id).map(user ->{
+                user.removeGroup(id);
+                return usersRepository.save(user);
+            });
             return repository.save(group);
         });
     }

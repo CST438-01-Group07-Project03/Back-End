@@ -33,20 +33,6 @@ public class SwipeHistoryController {
         return ResponseEntity.ok(likes);
     }
 
-    @GetMapping("/{id}/likes/foods")
-    public ResponseEntity<List<SwipeHistory>> getLikedFoods(@PathVariable long id) {
-        List<SwipeHistory> likes = swipeHistoryService.getLikedFoods(id);
-        return ResponseEntity.ok(likes);
-    }
-
-    @GetMapping("/{id}/likes/restaurants")
-    public ResponseEntity<List<SwipeHistory>> getLikedRestaurants(@PathVariable long id) {
-        List<SwipeHistory> likes = swipeHistoryService.getLikedRestaurants(id);
-        return ResponseEntity.ok(likes);
-    }
-
-
-
     @PostMapping("/{id}/likes")
     public ResponseEntity<?> recordSwipe(@PathVariable long id,
                                          @RequestBody Map<String, Object> body) {

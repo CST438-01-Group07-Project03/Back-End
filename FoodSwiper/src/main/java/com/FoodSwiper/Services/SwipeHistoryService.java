@@ -1,8 +1,6 @@
 package com.FoodSwiper.Services;
 
-//import com.FoodSwiper.Entities.Food;
 import com.FoodSwiper.Entities.Item;
-//import com.FoodSwiper.Entities.Restaurant;
 import com.FoodSwiper.Entities.SwipeHistory;
 import com.FoodSwiper.Entities.Users;
 import com.FoodSwiper.Repositories.SwipeHistoryRepository;
@@ -35,20 +33,19 @@ public class SwipeHistoryService {
         return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId);
     }
 
+    public List<SwipeHistory> getLikedFoods(long userId) {
+        return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId)
+                .stream()
+                .filter(s -> "food".equalsIgnoreCase(s.getItem().getType()))
+                .collect(Collectors.toList());
+    }
 
-//    public List<SwipeHistory> getLikedFoods(long userId) {
-//        return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId)
-//                .stream()
-//                .filter(s -> s.getItem() instanceof Food)
-//                .collect(Collectors.toList());
-//    }
-
-//    public List<SwipeHistory> getLikedRestaurants(long userId) {
-//        return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId)
-//                .stream()
-//                .filter(s -> s.getItem() instanceof Restaurant)
-//                .collect(Collectors.toList());
-//    }
+    public List<SwipeHistory> getLikedRestaurants(long userId) {
+        return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId)
+                .stream()
+                .filter(s -> "restaurant".equalsIgnoreCase(s.getItem().getType()))
+                .collect(Collectors.toList());
+    }
 
     public boolean unlike(long swipeId) {
         if (swipeHistoryRepository.existsById(swipeId)) {

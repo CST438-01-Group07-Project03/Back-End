@@ -1,8 +1,6 @@
 package com.FoodSwiper;
 
-import com.FoodSwiper.Entities.Food;
 import com.FoodSwiper.Entities.Item;
-import com.FoodSwiper.Entities.Restaurant;
 import com.FoodSwiper.Entities.SwipeHistory;
 import com.FoodSwiper.Entities.Users;
 import com.FoodSwiper.Repositories.SwipeHistoryRepository;
@@ -14,10 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 import java.util.List;
 import java.util.Optional;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -32,28 +28,28 @@ public class SwipeHistoryServiceTest {
     private SwipeHistoryService swipeHistoryService;
 
     private Users testUser;
-    private Food testFood;
-    private Restaurant testRestaurant;
+    private Item testItem;
+    private Item testItem2;
 
     @BeforeEach
     void setUp() {
         testUser = new Users();
-        testFood = new Food();
-        testRestaurant = new Restaurant();
+        testItem = new Item();
+        testItem2 = new Item();
     }
 
     @Test
     void recordSwipe_newLike_savesRecord() {
-        when(swipeHistoryRepository.findByUserAndItem(testUser, testFood))
+        when(swipeHistoryRepository.findByUserAndItem(testUser, testItem))
                 .thenReturn(Optional.empty());
 
         SwipeHistory saved = new SwipeHistory();
         saved.setUser(testUser);
-        saved.setItem(testFood);
+        saved.setItem(testItem);
         saved.setLiked(true);
         when(swipeHistoryRepository.save(any(SwipeHistory.class))).thenReturn(saved);
 
-        SwipeHistory result = swipeHistoryService.recordSwipe(testUser, testFood, true);
+        SwipeHistory result = swipeHistoryService.recordSwipe(testUser, testItem, true);
 
         assertTrue(result.isLiked());
         verify(swipeHistoryRepository, times(1)).save(any(SwipeHistory.class));
@@ -61,14 +57,14 @@ public class SwipeHistoryServiceTest {
 
     @Test
     void recordSwipe_pass_savesWithLikedFalse() {
-        when(swipeHistoryRepository.findByUserAndItem(testUser, testFood))
+        when(swipeHistoryRepository.findByUserAndItem(testUser, testItem))
                 .thenReturn(Optional.empty());
 
         SwipeHistory saved = new SwipeHistory();
         saved.setLiked(false);
         when(swipeHistoryRepository.save(any(SwipeHistory.class))).thenReturn(saved);
 
-        SwipeHistory result = swipeHistoryService.recordSwipe(testUser, testFood, false);
+        SwipeHistory result = swipeHistoryService.recordSwipe(testUser, testItem, false);
 
         assertFalse(result.isLiked());
     }
@@ -77,14 +73,14 @@ public class SwipeHistoryServiceTest {
     void recordSwipe_existingRecord_updatesInsteadOfCreatingNew() {
         SwipeHistory existing = new SwipeHistory();
         existing.setUser(testUser);
-        existing.setItem(testFood);
+        existing.setItem(testItem);
         existing.setLiked(false);
 
-        when(swipeHistoryRepository.findByUserAndItem(testUser, testFood))
+        when(swipeHistoryRepository.findByUserAndItem(testUser, testItem))
                 .thenReturn(Optional.of(existing));
         when(swipeHistoryRepository.save(existing)).thenReturn(existing);
 
-        swipeHistoryService.recordSwipe(testUser, testFood, true);
+        swipeHistoryService.recordSwipe(testUser, testItem, true);
 
         verify(swipeHistoryRepository, times(1)).save(existing);
     }
@@ -126,16 +122,16 @@ public class SwipeHistoryServiceTest {
     @Test
     void getUnswipedItems_excludesAlreadySwipedItems() {
         SwipeHistory pastSwipe = new SwipeHistory();
-        pastSwipe.setItem(testFood);
+        pastSwipe.setItem(testItem);
 
         when(swipeHistoryRepository.findByUser_Id(1L))
                 .thenReturn(List.of(pastSwipe));
 
-        List<Item> allItems = List.of(testFood, testRestaurant);
+        List<Item> allItems = List.of(testItem, testItem2);
 
         List<Item> result = swipeHistoryService.getUnswipedItems(1L, allItems);
 
         assertEquals(1, result.size());
-        assertFalse(result.contains(testFood));
+        assertFalse(result.contains(testItem));
     }
 }

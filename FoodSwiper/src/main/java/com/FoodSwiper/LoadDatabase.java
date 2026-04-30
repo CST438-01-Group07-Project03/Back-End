@@ -21,8 +21,12 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(UsersRepository usersRepository, GroupRepository groupRepository){
         return args -> {
-            log.info("Preloading" + usersRepository.save(new Users("TestUser", "TestUser@place.com")));
-            log.info("Preloading" + groupRepository.save(new Groups("TestGroup")));
+            if (usersRepository.count() == 0) {
+                log.info("Preloading " + usersRepository.save(new Users("TestUser", "TestUser@place.com")));
+            }
+            if (groupRepository.count() == 0) {
+                log.info("Preloading " + groupRepository.save(new Groups("TestGroup")));
+            }
         };
     }
 }

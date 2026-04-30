@@ -1,8 +1,8 @@
 package com.FoodSwiper.Services;
 
-import com.FoodSwiper.Entities.Food;
+//import com.FoodSwiper.Entities.Food;
 import com.FoodSwiper.Entities.Item;
-import com.FoodSwiper.Entities.Restaurant;
+//import com.FoodSwiper.Entities.Restaurant;
 import com.FoodSwiper.Entities.SwipeHistory;
 import com.FoodSwiper.Entities.Users;
 import com.FoodSwiper.Repositories.SwipeHistoryRepository;
@@ -36,19 +36,19 @@ public class SwipeHistoryService {
     }
 
 
-    public List<SwipeHistory> getLikedFoods(long userId) {
-        return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId)
-                .stream()
-                .filter(s -> s.getItem() instanceof Food)
-                .collect(Collectors.toList());
-    }
+//    public List<SwipeHistory> getLikedFoods(long userId) {
+//        return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId)
+//                .stream()
+//                .filter(s -> s.getItem() instanceof Food)
+//                .collect(Collectors.toList());
+//    }
 
-    public List<SwipeHistory> getLikedRestaurants(long userId) {
-        return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId)
-                .stream()
-                .filter(s -> s.getItem() instanceof Restaurant)
-                .collect(Collectors.toList());
-    }
+//    public List<SwipeHistory> getLikedRestaurants(long userId) {
+//        return swipeHistoryRepository.findByUser_IdAndLikedTrue(userId)
+//                .stream()
+//                .filter(s -> s.getItem() instanceof Restaurant)
+//                .collect(Collectors.toList());
+//    }
 
     public boolean unlike(long swipeId) {
         if (swipeHistoryRepository.existsById(swipeId)) {
@@ -61,7 +61,7 @@ public class SwipeHistoryService {
     public List<Item> getUnswipedItems(long userId, List<Item> allItems) {
         List<Long> swipedIds = swipeHistoryRepository.findByUser_Id(userId)
                 .stream()
-                .map(s -> s.getItem().getId())
+                .map(s -> (Long) s.getItem().getId())
                 .collect(Collectors.toList());
 
         List<Item> unswiped = allItems.stream()

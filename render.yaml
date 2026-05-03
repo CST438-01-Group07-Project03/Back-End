@@ -2,8 +2,6 @@ services:
   - type: web
     name: foodswiper-backend
     runtime: docker
-    dockerfilePath: ./FoodSwiper/Dockerfile
-    dockerContext: ./FoodSwiper
     envVars:
       - key: DB_URL
         sync: false

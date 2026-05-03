@@ -55,6 +55,7 @@ public class YelpDataLoader {
 
                     Item item = new Item(name, categories);
                     item.setType("restaurant");
+                    item.setYelpId(node.path("business_id").asText(""));
                     batch.add(item);
 
                     if (batch.size() == 100) {

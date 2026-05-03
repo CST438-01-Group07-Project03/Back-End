@@ -1,9 +1,9 @@
 services:
   - type: web
     name: foodswiper-backend
-    runtime: java
-    buildCommand: "./FoodSwiper/gradlew -p FoodSwiper build -x test"
-    startCommand: "java -jar FoodSwiper/build/libs/FoodSwiper-0.0.1-SNAPSHOT.jar"
+    runtime: docker
+    dockerfilePath: ./FoodSwiper/Dockerfile
+    dockerContext: ./FoodSwiper
     envVars:
       - key: DB_URL
         sync: false

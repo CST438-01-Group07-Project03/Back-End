@@ -27,6 +27,13 @@ public class SwipeHistoryController {
     @Autowired
     private ItemRepository itemRepository;
 
+    @GetMapping("/{id}/feed")
+    public ResponseEntity<List<Item>> getFeed(@PathVariable long id) {
+        List<Item> allItems = itemRepository.findAll();
+        List<Item> feed = swipeHistoryService.getUnswipedItems(id, allItems);
+        return ResponseEntity.ok(feed);
+    }
+
     @GetMapping("/{id}/likes")
     public ResponseEntity<List<SwipeHistory>> getLikes(@PathVariable long id) {
         List<SwipeHistory> likes = swipeHistoryService.getLikedItems(id);

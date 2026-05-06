@@ -19,8 +19,6 @@ public class Item {
     private String name;
     private String description;
     private String type;
-    private String yelpId;
-    private String imageUrl;
 
     public Item(String name, String description){
         this.name = name;
@@ -60,12 +58,6 @@ public class Item {
     public void setType(String type){
         this.type = type;
     }
-
-    public String getYelpId() { return yelpId; }
-    public void setYelpId(String yelpId) { this.yelpId = yelpId; }
-
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     @Override
     public boolean equals(Object o) {

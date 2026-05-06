@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: foodswiper-backend
+    runtime: docker
+    envVars:
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_DDL_AUTO
+        value: update
+      - key: DB_PLATFORM
+        value: org.hibernate.dialect.PostgreSQLDialect
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GCS_BUCKET_NAME
+        value: foodswiper-photos-cst438

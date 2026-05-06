@@ -1,9 +1,13 @@
 package com.FoodSwiper.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -19,6 +23,12 @@ public class Item {
     private String name;
     private String description;
     private String type;
+    private String yelpId;
+    private String imageUrl;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("item")
+    private List<Photo> photos;
 
     public Item(String name, String description){
         this.name = name;
@@ -58,6 +68,15 @@ public class Item {
     public void setType(String type){
         this.type = type;
     }
+
+    public String getYelpId() { return yelpId; }
+    public void setYelpId(String yelpId) { this.yelpId = yelpId; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public List<Photo> getPhotos() { return photos; }
+    public void setPhotos(List<Photo> photos) { this.photos = photos; }
 
     @Override
     public boolean equals(Object o) {

@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
+@Profile("!photo-upload")
 public class SecurityConfig {
 
     @Value("${frontend.url:http://localhost:5173}")

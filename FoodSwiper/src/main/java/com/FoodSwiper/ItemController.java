@@ -1,7 +1,9 @@
 package com.FoodSwiper;
 
 import com.FoodSwiper.Entities.Item;
+import com.FoodSwiper.Entities.Photo;
 import com.FoodSwiper.Repositories.ItemRepository;
+import com.FoodSwiper.Repositories.PhotoRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +15,11 @@ import java.util.List;
 @RestController
 public class ItemController {
     private final ItemRepository repository;
-    ItemController(ItemRepository repository){
+    private final PhotoRepository photoRepository;
+
+    ItemController(ItemRepository repository, PhotoRepository photoRepository){
         this.repository = repository;
+        this.photoRepository = photoRepository;
     }
 
     // Show all items
@@ -56,5 +61,14 @@ public class ItemController {
     @DeleteMapping("/items/{id}")
     void deleteItem(@PathVariable Long id){
         repository.deleteById(id);
+    }
+
+    // Get all photos for an item
+    @CrossOrigin
+    @GetMapping("/items/{id}/photos")
+    List<Photo> getPhotos(@PathVariable Long id){
+        return repository.findById(id)
+                .map(photoRepository::findByItem)
+                .orElse(List.of());
     }
 }

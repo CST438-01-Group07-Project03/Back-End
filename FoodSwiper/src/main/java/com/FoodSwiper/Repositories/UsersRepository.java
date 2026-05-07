@@ -11,4 +11,7 @@ import java.util.Optional;
  */
 public interface UsersRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByEmail(String email);
+
+    // ADDED: lookup for OAuth provider identity
+    Optional<Users> findByProviderAndProviderId(String provider, String providerId);
 }

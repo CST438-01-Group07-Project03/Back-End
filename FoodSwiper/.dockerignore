@@ -1,0 +1,6 @@
+.git
+.gradle
+.vscode
+.idea
+node_modules
+frontend

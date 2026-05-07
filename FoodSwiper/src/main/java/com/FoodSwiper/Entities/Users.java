@@ -18,13 +18,29 @@ public class Users {
 
     private String username;
     private String email;
+
+    // OAuth + admin support
+    private boolean isAdmin;
+    private String provider;
+    private String providerId;
+    private String avatarUrl;
+
+    @ElementCollection // CHANGED: needed for List<Long>
     private List<Long> group_ids;
+
     @OneToMany
     private List<Item> favorites;
 
     public Users(String username, String email){
         this.username = username;
         this.email = email;
+
+        // ADDED: default values for new users
+        this.isAdmin = false;
+        this.provider = "";
+        this.providerId = "";
+        this.avatarUrl = "";
+
         this.group_ids = new ArrayList<>();
         this.favorites = new ArrayList<>();
     }
@@ -54,6 +70,43 @@ public class Users {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    // ADDED
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    // ADDED
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    // ADDED
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    // ADDED
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    // ADDED
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public List<Item> getFavorites(){
@@ -86,12 +139,17 @@ public class Users {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Users users = (Users) o;
-        return id == users.id && Objects.equals(username, users.username) && Objects.equals(email, users.email);// && Objects.equals(group_ids, users.group_ids);
+        return id == users.id
+                && isAdmin == users.isAdmin // CHANGED
+                && Objects.equals(username, users.username)
+                && Objects.equals(email, users.email)
+                && Objects.equals(provider, users.provider)
+                && Objects.equals(providerId, users.providerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email);//, group_ids);
+        return Objects.hash(id, username, email, isAdmin, provider, providerId);
     }
 
     @Override
@@ -100,6 +158,9 @@ public class Users {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", provider='" + provider + '\'' +
+                ", providerId='" + providerId + '\'' +
                 ", group_ids=" + group_ids +
                 ", favorites=" + favorites +
                 '}';

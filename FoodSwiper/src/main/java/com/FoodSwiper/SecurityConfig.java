@@ -35,6 +35,14 @@ public class SecurityConfig {
             )
             .oauth2Login(oauth2 -> oauth2
                 .successHandler(oauthSuccessHandler())
+            )
+            .logout(logout -> logout
+                .logoutSuccessHandler((request, response, authentication) ->
+                    response.sendRedirect(frontendUrl + "/login")
+                )
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
             );
 
         return http.build();

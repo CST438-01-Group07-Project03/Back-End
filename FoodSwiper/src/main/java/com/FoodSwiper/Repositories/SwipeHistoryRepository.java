@@ -24,4 +24,6 @@ public interface SwipeHistoryRepository extends JpaRepository<SwipeHistory, Long
     List<SwipeHistory> findByUser_Id(long userId);
 
     List<SwipeHistory> findByUser_IdAndLikedTrue(long userId);
+
+    List<SwipeHistory> findByItem(Item item);
 }

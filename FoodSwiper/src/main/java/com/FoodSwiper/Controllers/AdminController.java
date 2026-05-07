@@ -3,10 +3,13 @@ package com.FoodSwiper.Controllers;
 import com.FoodSwiper.Entities.Item;
 import com.FoodSwiper.Entities.Users;
 import com.FoodSwiper.Repositories.ItemRepository;
+import com.FoodSwiper.Repositories.PhotoRepository;
+import com.FoodSwiper.Repositories.SwipeHistoryRepository;
 import com.FoodSwiper.Services.CurrentUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,10 +21,17 @@ import java.util.List;
 public class AdminController {
 
     private final ItemRepository itemRepository;
+    private final SwipeHistoryRepository swipeHistoryRepository;
+    private final PhotoRepository photoRepository;
     private final CurrentUserService currentUserService;
 
-    public AdminController(ItemRepository itemRepository, CurrentUserService currentUserService) {
+    public AdminController(ItemRepository itemRepository,
+                           SwipeHistoryRepository swipeHistoryRepository,
+                           PhotoRepository photoRepository,
+                           CurrentUserService currentUserService) {
         this.itemRepository = itemRepository;
+        this.swipeHistoryRepository = swipeHistoryRepository;
+        this.photoRepository = photoRepository;
         this.currentUserService = currentUserService;
     }
 
@@ -57,9 +67,14 @@ public class AdminController {
     }
 
     @DeleteMapping("/items/{id}")
+    @Transactional
     public void deleteItem(@AuthenticationPrincipal OAuth2User principal, @PathVariable Long id) {
         requireAdmin(principal);
-        itemRepository.deleteById(id);
+        itemRepository.findById(id).ifPresent(item -> {
+            swipeHistoryRepository.deleteAll(swipeHistoryRepository.findByItem(item));
+            photoRepository.deleteAll(photoRepository.findByItem(item));
+            itemRepository.delete(item);
+        });
     }
 
     private void requireAdmin(OAuth2User principal) {

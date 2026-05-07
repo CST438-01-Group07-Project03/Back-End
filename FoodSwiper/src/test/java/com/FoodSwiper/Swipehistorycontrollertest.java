@@ -54,6 +54,7 @@ class SwipeHistoryControllerTest {
         assertEquals(1, response.getBody().size());
     }
 
+
     @Test
     void getLikes_noLikes_returnsEmptyList() {
         when(swipeHistoryService.getLikedItems(1L)).thenReturn(List.of());

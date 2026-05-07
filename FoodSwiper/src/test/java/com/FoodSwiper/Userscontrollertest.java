@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
  * Unit tests for UsersController
  * @author Gael Romero
  */
+
 class UsersControllerTest {
 
     UsersRepository usersRepository;
